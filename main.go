@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"time"
 	"github.com/eiannone/keyboard"
+	"time"
 )
 
 var alphaNumToMorse = map[string]string{
@@ -80,17 +80,17 @@ func start() {
 	}
 }
 
-func print(morse string){
+func print(morse string) {
 	vl, found := morseToAlphaNum[morse]
 	if !found {
 		fmt.Print("\\u")
-	}else{
+	} else {
 		fmt.Print(vl)
 	}
 
 }
 
-func main(){
+func main() {
 	start()
 	if err := keyboard.Open(); err != nil {
 		panic(err)
@@ -106,31 +106,31 @@ func main(){
 		if err != nil {
 			panic(err)
 		}
-        if key == keyboard.KeyEnter {
+		if key == keyboard.KeyEnter {
 			if f.IsZero() {
 				f = time.Now()
 			} else {
 				s = time.Since(f)
-				f= time.Now()
+				f = time.Now()
 				//fmt.Println(s)
-				if (s.Milliseconds() > 300){
-					morse += "-"	
-				} else{
+				if s.Milliseconds() > 300 {
+					morse += "-"
+				} else {
 					morse += "."
 				}
 			}
 		} else {
 			s = time.Since(f)
-				f= time.Now()
-				//fmt.Println(s)
-			if (s.Milliseconds() > 300){
+			f = time.Now()
+			//fmt.Println(s)
+			if s.Milliseconds() > 300 {
 				morse += "-"
-			} else{
+			} else {
 				morse += "."
 			}
 			go print(morse)
 			morse = ""
-			f= time.Time{}
+			f = time.Time{}
 		}
-	}	
+	}
 }
