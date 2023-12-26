@@ -1,97 +1,22 @@
 package main
 
 import (
-	"fmt"
 	"github.com/eiannone/keyboard"
 	"time"
+	"os"
+	"strconv"
+	//"fmt"
 )
 
-var alphaNumToMorse = map[string]string{
-	"A":  ".-",
-	"B":  "-...",
-	"C":  "-.-.",
-	"D":  "-..",
-	"E":  ".",
-	"F":  "..-.",
-	"G":  "--.",
-	"H":  "....",
-	"I":  "..",
-	"J":  ".---",
-	"K":  "-.-",
-	"L":  ".-..",
-	"M":  "--",
-	"N":  "-.",
-	"O":  "---",
-	"P":  ".--.",
-	"Q":  "--.-",
-	"R":  ".-.",
-	"S":  "...",
-	"T":  "-",
-	"U":  "..-",
-	"V":  "...-",
-	"W":  ".--",
-	"X":  "-..-",
-	"Y":  "-.--",
-	"Z":  "--..",
-	"1":  ".----",
-	"2":  "..---",
-	"3":  "...--",
-	"4":  "....-",
-	"5":  ".....",
-	"6":  "-....",
-	"7":  "--...",
-	"8":  "---..",
-	"9":  "----.",
-	"0":  "-----",
-	".":  ".-.-.-",  // period
-	":":  "---...",  // colon
-	",":  "--..--",  // comma
-	";":  "-.-.-",   // semicolon
-	"?":  "..--..",  // question
-	"=":  "-...-",   // equals
-	"'":  ".----.",  // apostrophe
-	"/":  "-..-.",   // slash
-	"!":  "-.-.--",  // exclamation
-	"-":  "-....-",  // dash
-	"_":  "..--.-",  // underline
-	"\"": ".-..-.",  // quotation marks
-	"(":  "-.--.",   // parenthesis (open)
-	")":  "-.--.-",  // parenthesis (close)
-	"()": "-.--.-",  // parentheses
-	"$":  "...-..-", // dollar
-	"&":  ".-...",   // ampersand
-	"@":  ".--.-.",  // at
-	"+":  ".-.-.",   // plus
-	"Á":  ".--.-",   // A with acute accent
-	"Ä":  ".-.-",    // A with diaeresis
-	"É":  "..-..",   // E with acute accent
-	"Ñ":  "--.--",   // N with tilde
-	"Ö":  "---.",    // O with diaeresis
-	"Ü":  "..--",    // U with diaeresis
-	" ":  ".......", // word interval
-}
-
-var morseToAlphaNum map[string]string
-
-func start() {
-	morseToAlphaNum = map[string]string{}
-	for k, v := range alphaNumToMorse {
-		morseToAlphaNum[v] = k
-	}
-}
-
-func print(morse string) {
-	vl, found := morseToAlphaNum[morse]
-	if !found {
-		fmt.Print("\\u")
-	} else {
-		fmt.Print(vl)
-	}
-
-}
-
 func main() {
-	start()
+	if len(os.Args) > 2  {
+		i, err := strconv.Atoi(os.Args[2])
+		if err != nil{
+			panic(err)
+		}
+		ToMorse(i)
+	}
+	Start()
 	if err := keyboard.Open(); err != nil {
 		panic(err)
 	}
@@ -128,7 +53,7 @@ func main() {
 			} else {
 				morse += "."
 			}
-			go print(morse)
+			go Print(morse)
 			morse = ""
 			f = time.Time{}
 		}
